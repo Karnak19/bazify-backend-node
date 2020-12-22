@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "lint": "eslint --fix src"
+    "lint": "eslint --fix src",
+    "migrate:dev": "prisma migrate dev --preview-feature",
+    "prestart": "npm run migrate:dev"
   },
   "keywords": [],
   "author": "CJ R. <cj@null.computer> (https://w3cj.now.sh)",
