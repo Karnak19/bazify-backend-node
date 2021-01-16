@@ -68,7 +68,6 @@ router.post('/', async (req, res, next) => {
     });
     return res.status(201).send(newSong);
   } catch (error) {
-    onsole.error(error);
     res.status(error.statusCode || 500);
     return next(error);
   }
