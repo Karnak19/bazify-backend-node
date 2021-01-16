@@ -9,8 +9,29 @@ datasource db {
 
 model songs {
   id         String   @id @default(uuid())
-  title      String?
-  path       String?
+  title      String
+  s3_link    String
+  artist     artists?   @relation(fields:  [artistId], references: [id])
+  artistId   String?
+  album      albums?    @relation(fields:  [albumId], references: [id])
+  albumId    String?
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+}
+
+model artists {
+  id      String @id @default(uuid())
+  name    String @unique
+  picture String?
+  songs   songs[]
+  albums  albums[]
+}
+
+model albums {
+  id         String @id @default(uuid())
+  title       String @unique
+  picture    String?
+  artist     artists?   @relation(fields:  [artistId], references: [id])
+  artistId   String?
+  songs      songs[]
 }

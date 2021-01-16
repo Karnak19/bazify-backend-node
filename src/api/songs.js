@@ -1,16 +1,20 @@
 const fs = require('fs');
 const express = require('express');
-const multer = require('multer');
-
-const uploads = multer({ dest: 'uploads/' });
-
+const mm = require('music-metadata');
+const FileType = require('file-type');
+const { s3UploadFile } = require('../aws');
+const { asyncFormParse } = require('../util');
 const db = require('../../db');
 
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   try {
-    const songs = await db.songs.findMany();
+    const songs = await db.songs.findMany({
+      include: {
+        artist: true,
+      },
+    });
 
     res.status(200).json(songs);
   } catch (error) {
@@ -18,27 +22,54 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.post('/', uploads.array('songs', 10), async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
-    console.log(req.files);
-    req.files.forEach((file) => {
-      fs.rename(
-        `${process.cwd()}/uploads/${file.filename}`,
-        `${process.cwd()}/uploads/${file.filename}.mp3`,
-        async (err) => {
-          if (err) return next(err);
-          await db.songs.create({
-            data: {
-              path: `/uploads/${file.filename}.mp3`,
-              title: file.originalname.replace(/.mp3/g, ''),
-            },
-          });
-        }
-      );
-    });
+    const { files } = await asyncFormParse(req);
+    const path = files.file[0].path;
+    const {
+      common: { album, albumartist, title },
+    } = await mm.parseFile(path);
 
-    return res.sendStatus(201);
+    const buffer = fs.readFileSync(path);
+    const type = await FileType.fromBuffer(buffer);
+    const fileName = `${Date.now().toString()}`;
+    const data = await s3UploadFile(buffer, fileName, type);
+
+    const newSong = await db.songs.create({
+      data: {
+        title,
+        s3_link: data.Location,
+        album: {
+          connectOrCreate: {
+            create: {
+              title: album,
+              artist: {
+                connect: {
+                  name: albumartist,
+                },
+              },
+            },
+            where: {
+              title: album,
+            },
+          },
+        },
+        artist: {
+          connectOrCreate: {
+            create: {
+              name: albumartist,
+            },
+            where: {
+              name: albumartist,
+            },
+          },
+        },
+      },
+    });
+    return res.status(201).send(newSong);
   } catch (error) {
+    onsole.error(error);
+    res.status(error.statusCode || 500);
     return next(error);
   }
 });
