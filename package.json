@@ -4,7 +4,7 @@
   "description": "API for Bazify music",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm run migrate:prod",
+    "prestart": "npm run migrate:prod && npx prisma generate",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "lint": "eslint --fix src",
