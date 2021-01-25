@@ -113,4 +113,21 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+router.put('/:id', async (req, res, next) => {
+  try {
+    const song = await db.songs.update({
+      where: {
+        id: req.params.id,
+      },
+      data: {
+        duration: req.body.duration,
+      },
+    });
+
+    res.status(204).json(song);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
