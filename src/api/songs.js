@@ -42,71 +42,112 @@ router.post('/', async (req, res, next) => {
   try {
     const { files } = await asyncFormParse(req);
 
-    if (files.file.length > 1) {
-      res.status(400);
-      throw new Error('Please send only 1 file');
-    }
+    const multipleFilesUpload = files.file.map(async ({ path }) => {
+      const {
+        common: { album, albumartist, title },
+      } = await mm.parseFile(path);
 
-    const { path } = files.file[0];
+      const buffer = fs.readFileSync(path);
+      const type = await FileType.fromBuffer(buffer);
+      const fileName = `${slugify(albumartist)}/${slugify(album)}/${slugify(
+        title
+      )}`;
 
-    const {
-      common: { album, albumartist, title },
-    } = await mm.parseFile(path);
+      const count = await db.songs.count({
+        where: { title },
+      });
 
-    const buffer = fs.readFileSync(path);
-    const duration = await mp3DurationString(buffer);
-    const type = await FileType.fromBuffer(buffer);
-    const fileName = `${slugify(albumartist)}/${slugify(album)}/${slugify(
-      title
-    )}`;
+      if (count !== 0) {
+        res.status(400);
+        throw new Error('This song already exists');
+      }
 
-    const count = await db.songs.count({
-      where: { title },
+      return s3UploadFile(buffer, fileName, type);
     });
-
-    if (count !== 0) {
-      res.status(400);
-      throw new Error('This song already exists');
-    }
-
-    const data = await s3UploadFile(buffer, fileName, type);
+    const s3Response = await Promise.all(multipleFilesUpload);
     // eslint-disable-next-line no-console
-    console.log(`Upload to S3 done ! ${fileName}`);
+    console.log(`Upload to S3 done !`);
+    console.log(s3Response);
 
-    const newSong = await db.songs.create({
-      data: {
-        title,
-        duration,
-        s3_link: data.Location,
-        album: {
-          connectOrCreate: {
-            create: {
-              title: album,
-              artist: {
-                connect: {
-                  name: albumartist,
+    const dbCreateSongs = s3Response.map(async ({ Location }, i) => {
+      const { path } = files.file[i];
+      const {
+        common: { album, albumartist, title },
+      } = await mm.parseFile(path);
+      const buffer = fs.readFileSync(path);
+
+      const duration = await mp3DurationString(buffer);
+
+      return db.songs.create({
+        data: {
+          title,
+          duration,
+          s3_link: Location,
+          album: {
+            connectOrCreate: {
+              create: {
+                title: album,
+                artist: {
+                  connect: {
+                    name: albumartist,
+                  },
                 },
               },
+              where: {
+                title: album,
+              },
             },
-            where: {
-              title: album,
+          },
+          artist: {
+            connectOrCreate: {
+              create: {
+                name: albumartist,
+              },
+              where: {
+                name: albumartist,
+              },
             },
           },
         },
-        artist: {
-          connectOrCreate: {
-            create: {
-              name: albumartist,
-            },
-            where: {
-              name: albumartist,
-            },
-          },
-        },
-      },
+      });
     });
 
-    return res.status(201).json(newSong);
+    const createdSongs = await Promise.all(dbCreateSongs);
+
+    // const newSong = await db.songs.create({
+    //   data: {
+    //     title,
+    //     duration,
+    //     s3_link: data.Location,
+    //     album: {
+    //       connectOrCreate: {
+    //         create: {
+    //           title: album,
+    //           artist: {
+    //             connect: {
+    //               name: albumartist,
+    //             },
+    //           },
+    //         },
+    //         where: {
+    //           title: album,
+    //         },
+    //       },
+    //     },
+    //     artist: {
+    //       connectOrCreate: {
+    //         create: {
+    //           name: albumartist,
+    //         },
+    //         where: {
+    //           name: albumartist,
+    //         },
+    //       },
+    //     },
+    //   },
+    // });
+
+    return res.status(201).json(createdSongs || {});
   } catch (error) {
     res.status(error.code === 'P2002' ? 400 : res.statusCode || 500);
     return next(error);
