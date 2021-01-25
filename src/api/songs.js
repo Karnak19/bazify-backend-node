@@ -43,6 +43,7 @@ router.post('/', async (req, res, next) => {
     const { files } = await asyncFormParse(req);
 
     if (files.file.length > 1) {
+      res.status(400);
       throw new Error('Please send only 1 file');
     }
 
@@ -55,9 +56,22 @@ router.post('/', async (req, res, next) => {
     const buffer = fs.readFileSync(path);
     const duration = await mp3DurationString(buffer);
     const type = await FileType.fromBuffer(buffer);
-    const fileName = `${albumartist}/${slugify(album)}/${slugify(title)}`;
+    const fileName = `${slugify(albumartist)}/${slugify(album)}/${slugify(
+      title
+    )}`;
+
+    const count = await db.songs.count({
+      where: { title },
+    });
+
+    if (count !== 0) {
+      res.status(400);
+      throw new Error('This song already exists');
+    }
 
     const data = await s3UploadFile(buffer, fileName, type);
+    // eslint-disable-next-line no-console
+    console.log(`Upload to S3 done ! ${fileName}`);
 
     const newSong = await db.songs.create({
       data: {
@@ -94,7 +108,7 @@ router.post('/', async (req, res, next) => {
 
     return res.status(201).json(newSong);
   } catch (error) {
-    res.status(error.statusCode || 500);
+    res.status(error.code === 'P2002' ? 400 : res.statusCode || 500);
     return next(error);
   }
 });
