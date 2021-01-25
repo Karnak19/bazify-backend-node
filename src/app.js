@@ -14,7 +14,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.use('/uploads', express.static(`${process.cwd()}/uploads`));
+// app.use('/uploads', express.static(`${process.cwd()}/uploads`));
 
 app.get('/', (req, res) => {
   res.send('hello world');

@@ -7,8 +7,10 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "lint": "eslint --fix src",
-    "migrate:dev": "npx prisma migrate dev --preview-feature && npx prisma generate",
-    "prestart": "npm run migrate:dev"
+    "migrate:dev": "npx prisma migrate dev --preview-feature",
+    "migrate:reset": "npx prisma migrate reset --preview-feature",
+    "migrate:prod": "npx prisma migrate deploy --preview-feature",
+    "prestart": "npm run migrate:prod"
   },
   "keywords": [],
   "author": "CJ R. <cj@null.computer> (https://w3cj.now.sh)",
@@ -26,6 +28,7 @@
     "file-type": "^16.2.0",
     "helmet": "^4.2.0",
     "morgan": "^1.10.0",
+    "mp3-duration": "^1.1.0",
     "multer": "^1.4.2",
     "multiparty": "^4.2.2",
     "music-metadata": "^7.6.4"
@@ -38,6 +41,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.0",
     "nodemon": "^2.0.6",
+    "prettier": "^2.2.1",
     "supertest": "^6.0.1"
   }
 }

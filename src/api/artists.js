@@ -36,7 +36,18 @@ router.get('/:id/songs', async (req, res, next) => {
         id,
       },
       include: {
-        songs: true,
+        songs: {
+          select: {
+            title: true,
+            s3_link: true,
+            album: {
+              select: {
+                picture: true,
+                title: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -75,7 +86,6 @@ router.post('/', async (req, res, next) => {
     });
     return res.status(201).send(newArtist);
   } catch (error) {
-    onsole.error(error);
     res.status(error.statusCode || 500);
     return next(error);
   }

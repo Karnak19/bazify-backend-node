@@ -1,4 +1,5 @@
 const { Form } = require('multiparty');
+const mp3Duration = require('mp3-duration');
 
 const asyncFormParse = (req) =>
   new Promise((resolve, reject) => {
@@ -9,6 +10,26 @@ const asyncFormParse = (req) =>
     });
   });
 
+const slugify = (string) => {
+  return string.replace(/ /g, '-');
+};
+
+const mp3DurationString = (songPath) => {
+  return new Promise((resolve, reject) => {
+    mp3Duration(songPath, (err, duration) => {
+      if (err) reject(err);
+      let ceiled = Math.ceil(duration);
+      const minutes = Math.floor(ceiled / 60);
+      ceiled -= minutes / 60;
+      const seconds = parseInt(ceiled % 60, 10);
+
+      resolve(`${minutes}:${seconds}`);
+    });
+  });
+};
+
 module.exports = {
   asyncFormParse,
+  slugify,
+  mp3DurationString,
 };
