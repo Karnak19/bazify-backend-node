@@ -28,8 +28,18 @@ const mp3DurationString = (songPath) => {
   });
 };
 
+const isStringJSONParsable = (string) => {
+  try {
+    JSON.parse(string);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
 module.exports = {
   asyncFormParse,
   slugify,
   mp3DurationString,
+  isStringJSONParsable,
 };

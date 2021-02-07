@@ -53,6 +53,24 @@ router.post('/', async (req, res, next) => {
       common: { album, albumartist, title },
     } = await mm.parseFile(path);
 
+    if (!album || !albumartist || !title) {
+      const errorMessage = {
+        ...(!album && {
+          album: "This audio file doesn't have an album in metadata",
+        }),
+
+        ...(!albumartist && {
+          albumartist:
+            "This audio file doesn't have an albumartist in metadata",
+        }),
+        ...(!title && {
+          title: "This audio file doesn't have a title in metadata",
+        }),
+      };
+
+      throw new Error(JSON.stringify(errorMessage));
+    }
+
     const buffer = fs.readFileSync(path);
     const duration = await mp3DurationString(buffer);
     const type = await FileType.fromBuffer(buffer);
@@ -70,6 +88,7 @@ router.post('/', async (req, res, next) => {
     }
 
     const data = await s3UploadFile(buffer, fileName, type);
+
     // eslint-disable-next-line no-console
     console.log(`Upload to S3 done ! ${fileName}`);
 

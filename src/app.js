@@ -1,4 +1,3 @@
-const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
@@ -13,8 +12,6 @@ app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-
-// app.use('/uploads', express.static(`${process.cwd()}/uploads`));
 
 app.get('/', (req, res) => {
   res.send('hello world');
