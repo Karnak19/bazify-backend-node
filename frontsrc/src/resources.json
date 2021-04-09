@@ -1,0 +1,61 @@
+[
+  {
+    "name": "songs",
+    "routes": [
+      {
+        "verb": "GET",
+        "path": "/songs"
+      },
+      {
+        "verb": "POST",
+        "path": "/songs"
+      },
+      {
+        "verb": "PUT",
+        "path": "/songs/:id"
+      }
+    ]
+  },
+  {
+    "name": "artists",
+    "routes": [
+      {
+        "verb": "GET",
+        "path": "/artists"
+      },
+      {
+        "verb": "POST",
+        "path": "/artists"
+      },
+      {
+        "verb": "GET",
+        "path": "/artists/:id"
+      },
+      {
+        "verb": "GET",
+        "path": "/artists/:id/songs"
+      },
+      {
+        "verb": "GET",
+        "path": "/artists/:id/albums"
+      }
+    ]
+  },
+  {
+    "name": "albums",
+    "routes": [
+      {
+        "verb": "GET",
+        "path": "/albums"
+      },
+      {
+        "verb": "GET",
+        "path": "/albums/:id"
+      },
+      {
+        "verb": "PUT",
+        "path": "/albums/:id"
+      }
+    ]
+  }
+]
