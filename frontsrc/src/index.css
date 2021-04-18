@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: 'Nunito Sans', 'Courier New', Courier, monospace;
+}
+
+@layer components {
+  .grid > div {
+    @apply h-full;
+  }
+}

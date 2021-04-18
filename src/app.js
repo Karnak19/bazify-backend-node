@@ -13,9 +13,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('hello world');
-});
+app.use('/', express.static('frontsrc/dist'));
 
 app.use('/api/v1', api);
 

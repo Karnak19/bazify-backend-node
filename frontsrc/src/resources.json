@@ -4,15 +4,73 @@
     "routes": [
       {
         "verb": "GET",
-        "path": "/songs"
+        "path": "/songs",
+        "example": [
+          {
+            "id": "98b2c41d-6b12-4f9a-a0aa-dd155608ea2a",
+            "title": "3095 pt2",
+            "duration": "3:16",
+            "s3_link": "https://bazify.s3.amazonaws.com/Alpha-Wann/Dondada-mixtape/3095-pt2.mp3",
+            "artist": {
+              "name": "Alpha Wann",
+              "picture": null
+            },
+            "album": {
+              "title": "Dondada mixtape",
+              "picture": "https://pbs.twimg.com/media/EpeX7DnWwAI_a8v.jpg"
+            }
+          },
+          {
+            "id": "98b2c41d-6b12-4f9a-a0aa-dd155608ea2a",
+            "title": "3095 pt2",
+            "duration": "3:16",
+            "s3_link": "https://bazify.s3.amazonaws.com/Alpha-Wann/Dondada-mixtape/3095-pt2.mp3",
+            "artist": {
+              "name": "Alpha Wann",
+              "picture": null
+            },
+            "album": {
+              "title": "Dondada mixtape",
+              "picture": "https://pbs.twimg.com/media/EpeX7DnWwAI_a8v.jpg"
+            }
+          }
+        ]
       },
       {
         "verb": "POST",
-        "path": "/songs"
+        "path": "/songs",
+        "example": {
+          "id": "98b2c41d-6b12-4f9a-a0aa-dd155608ea2a",
+          "title": "3095 pt2",
+          "duration": "3:16",
+          "s3_link": "https://bazify.s3.amazonaws.com/Alpha-Wann/Dondada-mixtape/3095-pt2.mp3",
+          "artist": {
+            "name": "Alpha Wann",
+            "picture": null
+          },
+          "album": {
+            "title": "Dondada mixtape",
+            "picture": "https://pbs.twimg.com/media/EpeX7DnWwAI_a8v.jpg"
+          }
+        }
       },
       {
         "verb": "PUT",
-        "path": "/songs/:id"
+        "path": "/songs/:id",
+        "example": {
+          "id": "98b2c41d-6b12-4f9a-a0aa-dd155608ea2a",
+          "title": "3095 pt2",
+          "duration": "3:16",
+          "s3_link": "https://bazify.s3.amazonaws.com/Alpha-Wann/Dondada-mixtape/3095-pt2.mp3",
+          "artist": {
+            "name": "Alpha Wann",
+            "picture": null
+          },
+          "album": {
+            "title": "Dondada mixtape",
+            "picture": "https://pbs.twimg.com/media/EpeX7DnWwAI_a8v.jpg"
+          }
+        }
       }
     ]
   },
@@ -21,7 +79,24 @@
     "routes": [
       {
         "verb": "GET",
-        "path": "/artists"
+        "path": "/artists",
+        "example": [
+          {
+            "id": "71d6500f-3cae-42f6-bb5a-389c5c50ec69",
+            "name": "Alpha Wann",
+            "picture": null
+          },
+          {
+            "id": "cabcb2a3-5f15-4643-95d7-065015baaaf2",
+            "name": "Deen Burbigo",
+            "picture": null
+          },
+          {
+            "id": "ada0ce08-bb8b-4ee4-831c-6de04e301cea",
+            "name": "Josman",
+            "picture": null
+          }
+        ]
       },
       {
         "verb": "POST",
@@ -29,15 +104,56 @@
       },
       {
         "verb": "GET",
-        "path": "/artists/:id"
+        "path": "/artists/:id",
+        "example": {
+          "id": "71d6500f-3cae-42f6-bb5a-389c5c50ec69",
+          "name": "Alpha Wann",
+          "picture": null
+        }
       },
       {
         "verb": "GET",
-        "path": "/artists/:id/songs"
+        "path": "/artists/:id/songs",
+        "example": {
+          "id": "71d6500f-3cae-42f6-bb5a-389c5c50ec69",
+          "name": "Alpha Wann",
+          "picture": null,
+          "songs": [
+            {
+              "title": "3095 pt2",
+              "s3_link": "https://bazify.s3.amazonaws.com/Alpha-Wann/Dondada-mixtape/3095-pt2.mp3",
+              "album": {
+                "picture": "https://pbs.twimg.com/media/EpeX7DnWwAI_a8v.jpg",
+                "title": "Dondada mixtape"
+              }
+            },
+            {
+              "title": "aaa",
+              "s3_link": "https://bazify.s3.eu-west-3.amazonaws.com/Alpha-Wann/Dondada-mixtape/aaa.mp3",
+              "album": {
+                "picture": "https://pbs.twimg.com/media/EpeX7DnWwAI_a8v.jpg",
+                "title": "Dondada mixtape"
+              }
+            }
+          ]
+        }
       },
       {
         "verb": "GET",
-        "path": "/artists/:id/albums"
+        "path": "/artists/:id/albums",
+        "example": {
+          "id": "71d6500f-3cae-42f6-bb5a-389c5c50ec69",
+          "name": "Alpha Wann",
+          "picture": null,
+          "albums": [
+            {
+              "id": "52b0c090-6f6d-4320-8adb-f783d7464b2c",
+              "title": "Dondada mixtape",
+              "picture": "https://pbs.twimg.com/media/EpeX7DnWwAI_a8v.jpg",
+              "artistId": "71d6500f-3cae-42f6-bb5a-389c5c50ec69"
+            }
+          ]
+        }
       }
     ]
   },
@@ -46,11 +162,57 @@
     "routes": [
       {
         "verb": "GET",
-        "path": "/albums"
+        "path": "/albums",
+        "example": [
+          {
+            "id": "52b0c090-6f6d-4320-8adb-f783d7464b2c",
+            "title": "Dondada mixtape",
+            "picture": "https://pbs.twimg.com/media/EpeX7DnWwAI_a8v.jpg",
+            "artistId": "71d6500f-3cae-42f6-bb5a-389c5c50ec69"
+          },
+          {
+            "id": "29dd4385-3a85-41d0-ab3b-14c9db7abc2e",
+            "title": "Cercle Vertueux",
+            "picture": null,
+            "artistId": "cabcb2a3-5f15-4643-95d7-065015baaaf2"
+          },
+          {
+            "id": "6e7cc87b-1623-4f5d-80cf-5b19bc064c59",
+            "title": "MYSTR J.O.$.",
+            "picture": null,
+            "artistId": "ada0ce08-bb8b-4ee4-831c-6de04e301cea"
+          },
+          {
+            "id": "00748a9b-6918-4223-b676-6a2f772ac411",
+            "title": "The Very Best Of (2009) By LamaPower",
+            "picture": null,
+            "artistId": "078adb68-190f-4b87-93f0-a9c5c0ff68e0"
+          }
+        ]
       },
       {
         "verb": "GET",
-        "path": "/albums/:id"
+        "path": "/albums/:id",
+        "example": {
+          "id": "52b0c090-6f6d-4320-8adb-f783d7464b2c",
+          "title": "Dondada mixtape",
+          "picture": "https://pbs.twimg.com/media/EpeX7DnWwAI_a8v.jpg",
+          "artistId": "71d6500f-3cae-42f6-bb5a-389c5c50ec69",
+          "songs": [
+            {
+              "id": "98b2c41d-6b12-4f9a-a0aa-dd155608ea2a",
+              "title": "3095 pt2",
+              "duration": "3:16",
+              "s3_link": "https://bazify.s3.amazonaws.com/Alpha-Wann/Dondada-mixtape/3095-pt2.mp3"
+            },
+            {
+              "id": "6e88d212-8d4f-4279-8b42-917c7df42465",
+              "title": "aaa",
+              "duration": "2:44",
+              "s3_link": "https://bazify.s3.eu-west-3.amazonaws.com/Alpha-Wann/Dondada-mixtape/aaa.mp3"
+            }
+          ]
+        }
       },
       {
         "verb": "PUT",
