@@ -15,7 +15,7 @@ function ResourceRoute({ verb, path, example }) {
     >
       <Verb verb={verb} setOpened={setOpened} />
       <Path path={path} setOpened={setOpened} />
-      <div className="col-start-4 col-span-1">
+      <div className="col-start-4 col-span-1" onClick={setOpened}>
         <ChevronDownIcon className="h-12 drop-shadow-sm shadow rounded-full cursor-pointer bg-teal-700 group-hover:bg-teal-400" />
       </div>
       <Content opened={opened} example={example} />
