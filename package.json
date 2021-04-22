@@ -8,9 +8,9 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "lint": "eslint --fix src",
-    "migrate:dev": "npx prisma migrate dev --preview-feature",
-    "migrate:reset": "npx prisma migrate reset --preview-feature",
-    "migrate:prod": "npx prisma migrate deploy --preview-feature"
+    "migrate:dev": "npx prisma migrate dev",
+    "migrate:reset": "npx prisma migrate reset",
+    "migrate:prod": "npx prisma migrate deploy"
   },
   "keywords": [],
   "author": "Basile V. <basile64.v@gmail.com>",
@@ -20,7 +20,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@prisma/client": "^2.13.1",
+    "@prisma/client": "^2.21.2",
     "aws-sdk": "^2.828.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -33,7 +33,6 @@
     "music-metadata": "^7.6.4"
   },
   "devDependencies": {
-    "@prisma/cli": "^2.13.1",
     "eslint": "^7.14.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.1.0",
@@ -41,6 +40,7 @@
     "eslint-plugin-prettier": "^3.3.0",
     "nodemon": "^2.0.6",
     "prettier": "^2.2.1",
+    "prisma": "^2.21.2",
     "supertest": "^6.0.1"
   }
 }
