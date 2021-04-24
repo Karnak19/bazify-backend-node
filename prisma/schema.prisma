@@ -14,6 +14,8 @@ model songs {
   duration   String   @default("0:00")
   artist     artists? @relation(fields: [artistId], references: [id])
   artistId   String?
+  playlist     playlists? @relation(fields: [playlistId], references: [id])
+  playlistId   String?
   album      albums?  @relation(fields: [albumId], references: [id])
   albumId    String?
   created_at DateTime @default(now())
@@ -35,4 +37,12 @@ model albums {
   artist   artists? @relation(fields: [artistId], references: [id])
   artistId String?
   songs    songs[]
+}
+
+model playlists {
+  id String @id @default(uuid())
+  title String @unique
+  description String
+  picture String
+  songs songs[]
 }
