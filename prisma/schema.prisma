@@ -40,8 +40,9 @@ model albums {
 }
 
 model users {
-  id       String  @id @default(uuid())
-  pseudo   String  @unique
-  password String
+  id       String   @id @default(uuid())
+  pseudo   String   @unique
+  password String?
+  isOAuth  Boolean? @default(false)
   songs    songs[]
 }

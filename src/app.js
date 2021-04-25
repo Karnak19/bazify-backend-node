@@ -4,6 +4,7 @@ const path = require('path');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
+const passport = require('passport');
 
 const middlewares = require('./middlewares');
 const api = require('./api');
@@ -26,6 +27,9 @@ app.use(
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+
+app.use(passport.initialize());
+require('./passport');
 
 app.use('/', express.static('frontsrc/dist'));
 

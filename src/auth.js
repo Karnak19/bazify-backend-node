@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 const db = require('../db');
 const { decodePassword, hashPassword } = require('./util');
 
@@ -14,6 +15,7 @@ router.post('/login', async (req, res, next) => {
     const user = await db.users.findUnique({
       where: {
         pseudo,
+        isOAuth: false,
       },
     });
 
@@ -47,6 +49,53 @@ router.post('/login', async (req, res, next) => {
     next(error);
   }
 });
+
+router.get('/github', (req, res) =>
+  passport.authenticate('github', {
+    scope: ['profile', 'email'],
+    state: req.headers.referer,
+  })(req, res)
+);
+
+router.get(
+  '/github/cb',
+  passport.authenticate('github', {
+    failureRedirect: '/',
+    session: false,
+  }),
+  async (req, res) => {
+    let user;
+
+    user = await db.users.findUnique({
+      where: {
+        pseudo: req.user.username,
+      },
+    });
+
+    if (!user) {
+      user = await db.users.create({
+        data: {
+          pseudo: req.user.username,
+          isOAuth: true,
+        },
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        username: user.pseudo,
+      },
+      process.env.SECRET,
+      {
+        expiresIn: '24h',
+      }
+    );
+
+    res.redirect(
+      `${req.query.state}?token=${token}&id=${user.id}&pseudo=${user.pseudo}`
+    );
+  }
+);
 
 router.post('/register', async (req, res, next) => {
   const { pseudo, password } = req.body;
