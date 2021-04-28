@@ -28,6 +28,25 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
+router.put('/:id', async (req, res, next) => {
+  const { id } = req.params;
+  const { picture } = req.body;
+  try {
+    const artists = await db.artists.update({
+      where: {
+        id,
+      },
+      data: {
+        picture,
+      },
+    });
+
+    res.status(200).json(artists);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get('/:id/songs', async (req, res, next) => {
   const { id } = req.params;
   try {

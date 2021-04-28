@@ -103,6 +103,10 @@
         "path": "/artists"
       },
       {
+        "verb": "PUT",
+        "path": "/artists/:id"
+      },
+      {
         "verb": "GET",
         "path": "/artists/:id",
         "example": {
@@ -217,6 +221,47 @@
       {
         "verb": "PUT",
         "path": "/albums/:id"
+      }
+    ]
+  },
+  {
+    "name": "playlists",
+    "routes": [
+      {
+        "verb": "GET",
+        "path": "/playlists",
+        "example": [
+          {
+            "id": "41729d4d-60b1-45ae-abde-600afcc34d86",
+            "title": "Super playlist",
+            "description": "Cette playlsit est vraiment super cool",
+            "picture": "https://static01.nyt.com/images/2018/10/04/magazine/04blackhole1/04blackhole1-articleLarge-v3.jpg",
+            "songs": []
+          }
+        ]
+      },
+      {
+        "verb": "GET",
+        "path": "/playlists/:id",
+        "example": {
+          "id": "41729d4d-60b1-45ae-abde-600afcc34d86",
+          "title": "Super playlist",
+          "description": "Cette playlsit est vraiment super cool",
+          "picture": "https://static01.nyt.com/images/2018/10/04/magazine/04blackhole1/04blackhole1-articleLarge-v3.jpg",
+          "songs": []
+        }
+      },
+      {
+        "verb": "PUT",
+        "path": "/playlists/:id"
+      },
+      {
+        "verb": "POST",
+        "path": "/playlists"
+      },
+      {
+        "verb": "DELETE",
+        "path": "/playlists/:id/songs/:songId"
       }
     ]
   }
