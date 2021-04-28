@@ -133,13 +133,21 @@ router.post('/', async (req, res, next) => {
 });
 
 router.put('/:id', async (req, res, next) => {
+  const { duration, playlistId } = req.body;
+  const { id } = req.params;
+
   try {
     const song = await db.songs.update({
       where: {
-        id: req.params.id,
+        id,
       },
       data: {
-        duration: req.body.duration,
+        duration,
+        playlist: {
+          connect: {
+            id: playlistId,
+          },
+        },
       },
     });
 
