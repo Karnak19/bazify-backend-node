@@ -1,4 +1,4 @@
-FROM node:14.15
+FROM node:14-alpine
 WORKDIR /usr/src/app
 ARG PORT=${PORT}
 ARG DATABASE_URL=${DATABASE_URL}
