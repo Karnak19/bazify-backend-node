@@ -29,6 +29,12 @@ router.get('/', async (req, res, next) => {
             picture: true,
           },
         },
+        playlists: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
       },
     });
 
@@ -143,7 +149,7 @@ router.put('/:id', async (req, res, next) => {
       },
       data: {
         duration,
-        playlist: {
+        playlists: {
           connect: {
             id: playlistId,
           },

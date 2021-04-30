@@ -43,6 +43,20 @@ router.get('/:id', async (req, res, next) => {
             title: true,
             duration: true,
             s3_link: true,
+            album: {
+              select: {
+                id: true,
+                title: true,
+                picture: true,
+              },
+            },
+            artist: {
+              select: {
+                id: true,
+                picture: true,
+                name: true,
+              },
+            },
           },
         },
       },
@@ -110,6 +124,21 @@ router.delete('/:idPlaylist/songs/:idSong', async (req, res, next) => {
             id: idSong,
           },
         },
+      },
+    });
+    return res.sendStatus(204);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    await db.playlists.delete({
+      where: {
+        id,
       },
     });
     return res.sendStatus(204);
